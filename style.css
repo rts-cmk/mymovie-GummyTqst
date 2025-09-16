@@ -1,0 +1,218 @@
+/* Resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1,
+h2 {
+    color: #100E47;
+    margin-bottom: 16px;
+}
+
+.moreBtn {
+    background: none;
+    border: 1px solid #AAA9B1;
+    border-radius: 12px;
+    outline: none;
+    padding: 4px 8px;
+    color: #AAA9B1;
+}
+
+/* Swticher */
+body {
+    background: #fafafa;
+    color: #1a1a1a;
+    transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background: #121212;
+    color: #e0e0e0;
+}
+
+
+/* Header */
+header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 1rem;
+}
+
+header h1 {
+    grid-column: 2;
+    text-align: center;
+    margin: 0;
+    grid-column: 2;
+}
+
+header .switch {
+    grid-column: 3;
+    justify-self: end;
+}
+
+/* Slider */
+.switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+}
+
+input:checked + .slider {
+    background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Sections */
+.section {
+    margin: 1.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.movies-grid {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+}
+
+.movies-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.movie-card {
+    border-radius: 12px;
+    width: 150px;
+    flex: 0 0 auto;
+}
+
+.movie-card img {
+    width: 100%;
+}
+
+.movie-info {
+    padding: 0.5rem;
+}
+
+.movie-info h3 {
+    font-size: 1rem;
+    margin: 0.2rem 0;
+}
+
+.rating {
+    color: #9C9C9C;
+    margin-top: 8px;
+}
+
+/* Popular movies section */
+#popular {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.movie-card.popular {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+.movie-card.popular img {
+    width: 120px;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.genre-badge {
+    display: inline-block;
+    border-radius: 12px;
+    padding: 4px 12px;
+    margin: 8px 8px 0 0;
+    background-color: #DBE3FF;
+    color: #88A4E8;
+}
+
+.runtime {
+    margin-top: 8px;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item svg {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-item.active svg,
+.nav-item:hover svg {
+    color: #4b3eff;
+}

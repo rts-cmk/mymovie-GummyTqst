@@ -1,0 +1,120 @@
+const wrapper = document.querySelector("#wrapper")
+
+const baseImgUrl = "https://image.tmdb.org/t/p/w500"
+
+// Darkmode
+const toggle = document.querySelector("#darkmode-toggle")
+
+// Load saves preference
+if (localStorage.getItem("darkmode") === "enabled") {
+    document.body.classList.add("dark-mode")
+    toggle.checked = true
+}
+
+// Listen for toggle
+toggle.addEventListener("change", () => {
+    if (toggle.checked) {
+        document.body.classList.add("dark-mode")
+        localStorage.setItem("darkmode", "enabled")
+    } else {
+        document.body.classList.remove("dark-mode")
+        localStorage.setItem("darkmode", "disabled")
+    }
+})
+
+// Fetch Now Showing
+fetch("https://api.themoviedb.org/3/movie/now_playing", {
+    headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`
+    }
+})
+    .then(response => response.json())
+    .then(movies => {
+        renderMovies(movies.results, document.querySelector("#now-showing"), "now-showing")
+    })
+
+// Fetch Popular
+fetch("https://api.themoviedb.org/3/movie/popular", {
+    headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`
+    }
+})
+    .then(response => response.json())
+    .then(movies => {
+        renderMovies(movies.results, document.querySelector("#popular"), "popular")
+    })
+
+// Movie
+function formatRuntime(minutes) {
+    if (!minutes) return "N/A"
+    const hrs = Math.floor(minutes / 60) // Divide by 60 and round down to get hours
+    const mins = minutes % 60 // Get the remainder of minutes after dividing by 60
+    return `${hrs}h ${mins}m`
+}
+
+function renderMovies(movies, container, type) {
+    let movieCards = movies.map(movie => {
+        if (type === "now-showing") {
+            return `
+                <div class="movie-card now-showing">
+                    <img src="${baseImgUrl + movie.poster_path}" alt="${movie.title}">
+                    <div class="movie-info">
+                        <h3>${movie.title}</h3>
+                        <p class="rating">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#FFC319">
+                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.175L12 18.896l-7.336 3.871 1.402-8.175L.132 9.21l8.2-1.192z"/>
+                            </svg>
+                            Rating ${movie.vote_average.toFixed(1)}/10
+                        </p>
+                    </div>
+                </div>
+            `;
+        } else if (type === "popular") {
+            return `
+                <div class="movie-card popular" id="movie-${movie.id}">
+                    <img src="${baseImgUrl + movie.poster_path}" alt="${movie.title}">
+                    <div class="movie-info">
+                        <h3>${movie.title}</h3>
+                        <p class="rating">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#FFC319">
+                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.175L12 18.896l-7.336 3.871 1.402-8.175L.132 9.21l8.2-1.192z"/>
+                            </svg>
+                            Rating ${movie.vote_average.toFixed(1)}/10
+                        </p>
+                        <p>${movie.genre_ids.map(id => `<span class="genre-badge"> ${genres.find(genre => genre.id == id).name} </span>`).join("")}</p>
+                        <p class="runtime"></p> 
+                    </div>
+                </div>
+            `; 
+        }
+    }).join("")
+
+    container.insertAdjacentHTML("beforeend", movieCards)
+
+    container.querySelectorAll(".movie-card").forEach(card => {
+        card.addEventListener("click", () => {
+            let movieId = card.dataset.id;
+            window.location.href = `movie.html?id=${movieId}`;
+        })
+    })
+
+    // Fetch Movie times
+    movies.forEach(movie => {
+        fetch(`https://api.themoviedb.org/3/movie/${movie.id}`, {
+            headers: {
+                accept: "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(details => {
+            const runtime = document.querySelector(`#movie-${details.id} .runtime`);
+            if (runtime) {
+                runtime.textContent = formatRuntime(details.runtime);
+            }
+        });
+    });
+}
+
