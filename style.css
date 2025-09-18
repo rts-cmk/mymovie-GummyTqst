@@ -27,11 +27,37 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
+/* Dark mode */
 body.dark-mode {
-    background: #121212;
-    color: #e0e0e0;
+    background-color: #121212;
+    color: #ffffff;
+}
+  
+body.dark-mode footer.bottom-nav {
+    background-color: #1e1e1e;
+    border-top: 1px solid #333;
 }
 
+body.dark-mode .movie-details-content {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+  
+body.dark-mode h1 {
+    color: #DBE3FF;
+}
+
+body.dark-mode h2 {
+    color: #DBE3FF;
+}
+
+body.dark-mode .nav-item svg path {
+    fill: #fff; /* match your header icon color */
+}
+
+body.dark-mode .bookmark svg path {
+    fill: #fff; /* match your header icon color */
+}
 
 /* Header */
 header {
@@ -126,12 +152,13 @@ input:checked + .slider:before {
 
 .movie-card {
     border-radius: 12px;
-    width: 150px;
+    width: 175px;
     flex: 0 0 auto;
 }
 
 .movie-card img {
     width: 100%;
+    border-radius: 12px;
 }
 
 .movie-info {
@@ -215,4 +242,200 @@ input:checked + .slider:before {
 .nav-item.active svg,
 .nav-item:hover svg {
     color: #4b3eff;
+}
+
+
+/* Movie Details */
+#movie-details {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.movie-banner {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.movie-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-details-content {
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px 20px 0 0;
+    margin-top: -100%;
+    position: relative;
+    z-index: 2;
+}
+
+/* Movie Header */
+.movie-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.bookmark {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icon overlay */
+
+/* Banner Icons Overlay */
+.banner-icons {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+}
+
+/* Icon Buttons */
+.icon-btn {
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn svg {
+    fill: white;
+}
+
+/* Play Button Styling */
+.play-btn {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 50%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.play-btn svg {
+    fill: #000;
+}
+
+.playTrailer-text {
+    position: absolute;
+    top: 27%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+/* Back Button */
+.back-btn {
+    background: none;
+}
+
+/* Toggle Button */
+.toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Movie Info */
+.movie-genres {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.movie-info-grid {
+    margin-top: 1rem;
+    display: flex;
+    gap: 5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.movie-info-grid .label {
+    color: #9C9C9C;
+}
+
+.movie-overview {
+    margin-top: 24px;
+    line-height: 1.6;
+}
+
+.movie-overview h2 {
+    margin-bottom: 8px;
+}
+
+.movie-overview p {
+    line-height: 22px;
+    color: #9C9C9C;
+    letter-spacing: 2%;
+}
+
+/* Cast */
+.movie-cast {
+    margin-top: 24px;
+}
+
+.movie-cast__section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cast-grid {
+    margin-top: 1rem;
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+}
+
+.cast-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 72px;
+}
+
+.cast-card img {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.cast-grid::-webkit-scrollbar {
+    display: none;
 }
