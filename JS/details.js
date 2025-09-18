@@ -10,6 +10,16 @@ function findRating(release_dates_array) {
     return rated.certification
 }
 
+function playTrailer(videos) {
+    let trailer = videos.results.find(video => video.type === "Trailer" && video.site === "YouTube");
+    if (trailer) {
+        const trailerUrl = `https://www.youtube.com/watch?v=${trailer.key}`
+        window.open(trailerUrl, "_blank");
+    } else {
+        alert("Trailer not available") 
+    }
+}
+
 fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=credits,videos,release_dates`, {
     headers: {
         accept: "application/json",
@@ -20,6 +30,13 @@ fetch(`https://api.themoviedb.org/3/movie/${movieId}?append_to_response=credits,
 .then(movie => {
     renderMovieDetails(movie);
     console.log(movie);
+
+    // Play trailer
+    const playBtn = document.querySelector(".play-btn")
+
+    playBtn.addEventListener("click", () => {
+        playTrailer(movie.videos)
+    })
 
     // Darkmode
     darkMode("#darkmode-toggle");
@@ -49,7 +66,7 @@ function renderMovieDetails(movie) {
             </div>
 
             <!-- Play Trailer -->
-            <button class="icon-btn play-btn">
+            <button class="icon-btn play-btn"> 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="black" width="48" height="48" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                 </svg>
