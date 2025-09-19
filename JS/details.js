@@ -6,8 +6,13 @@ const movieId = params.get("id");
 
 function findRating(release_dates_array) {
     let us_dates = release_dates_array.results.find(element => element.iso_3166_1 === "US");
-    let rated = us_dates.release_dates.find(element => element.certification !== "" );
-    return rated.certification
+    if (us_dates) {
+        let rated = us_dates.release_dates.find(element => element.certification !== "" );
+        if (rated) {
+            return rated.certification;
+        }
+    }
+    return "Not Rated"
 }
 
 function playTrailer(videos) {
