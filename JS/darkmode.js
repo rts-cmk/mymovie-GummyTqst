@@ -1,7 +1,7 @@
 function darkMode(toggleSelector) {
     const toggle = document.querySelector(toggleSelector);
 
-    if (!toggle) return; // no toggle found, just skip
+    if (!toggle) return;
 
     // Load saved preference
     if (localStorage.getItem("darkmode") === "enabled") {
@@ -21,5 +21,4 @@ function darkMode(toggleSelector) {
     });
 }
 
-// Expose globally
 window.darkMode = darkMode;

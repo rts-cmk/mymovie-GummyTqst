@@ -5,6 +5,47 @@ const baseImgUrl = "https://image.tmdb.org/t/p/w500"
 // Darkmode
 darkMode("#darkmode-toggle");
 
+let popularPage = 1
+let isLoading = false
+const popularContainer = document.querySelector("#popular")
+
+// Create observer
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !isLoading) {
+            fetchPopular(popularPage)
+        }
+    })
+}, {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0
+})
+
+function fetchPopular(page) {
+    if (isLoading) return;
+    isLoading = true;
+
+    fetch(`https://api.themoviedb.org/3/movie/popular?page=${page}`, {
+        headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(movies => {
+        renderMovies(movies.results, popularContainer, "popular");
+        popularPage++;
+        isLoading = false;
+    })
+    .catch(error => {
+        console.error("Error fetching popular movies:", error);
+        isLoading = false;
+    });
+}
+
+fetchPopular(popularPage)
+
 // Fetch Now Showing
 fetch("https://api.themoviedb.org/3/movie/now_playing", {
     headers: {
@@ -18,16 +59,16 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", {
     })
 
 // Fetch Popular
-fetch("https://api.themoviedb.org/3/movie/popular", {
-    headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`
-    }
-})
-    .then(response => response.json())
-    .then(movies => {
-        renderMovies(movies.results, document.querySelector("#popular"), "popular")
-    })
+// fetch("https://api.themoviedb.org/3/movie/popular", {
+//     headers: {
+//         accept: "application/json",
+//         Authorization: `Bearer ${token}`
+//     }
+// })
+//     .then(response => response.json())
+//     .then(movies => {
+//         renderMovies(movies.results, document.querySelector("#popular"), "popular")
+//     })
 
 // Movie
 function formatRuntime(minutes) {
@@ -99,5 +140,14 @@ function renderMovies(movies, container, type) {
             }
         });
     });
+
+    if (type === "popular" && movies.length > 0) {
+        observer.disconnect();
+        const popularMovies = container.querySelectorAll(".movie-card.popular");
+        if (popularMovies.length > 0) {
+            const lastMovie = popularMovies[popularMovies.length - 1];
+            observer.observe(lastMovie);
+        }
+    }
 }
 
